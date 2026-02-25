@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jose Villarreal — Desarrollador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --white: #ffffff;
+      --off: #f5f4f1;
+      --black: #0d0d0d;
+      --gray: #6b6b6b;
+      --light-gray: #e8e6e1;
+      --accent: #1a1a1a;
+      --line: #d8d5ce;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 4rem;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--black);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 4rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(8rem, 20vw, 22rem);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--light-gray);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.04em;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.2s forwards;
+    }
+
+    .hero-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: slideUp 0.8s ease 0.4s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 8vw, 8rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: slideUp 0.8s ease 0.6s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--gray);
+    }
+
+    .hero-desc {
+      max-width: 480px;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gray);
+      font-weight: 300;
+      opacity: 0;
+      animation: slideUp 0.8s ease 0.8s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 4rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.2s forwards;
+    }
+
+    .hero-scroll::before {
+      content: '';
+      width: 1px;
+      height: 60px;
+      background: var(--line);
+      display: block;
+      animation: lineGrow 1s ease 1.4s both;
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* SECTION */
+    section {
+      padding: 7rem 4rem;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .about-title em {
+      font-style: italic;
+      color: var(--gray);
+    }
+
+    .about-text {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--gray);
+      font-weight: 300;
+    }
+
+    .about-text p+p {
+      margin-top: 1.2rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .stat-item {}
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 0.4rem;
+    }
+
+    /* PROJECTS */
+    #proyectos {
+      background: var(--off);
+    }
+
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .project-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .project-item:first-child {
+      border-top: 1px solid var(--line);
+    }
+
+    .project-item:hover .project-title {
+      transform: translateX(8px);
+    }
+
+    .project-item:hover .project-arrow {
+      transform: translateX(4px);
+      opacity: 1;
+    }
+
+    .project-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gray);
+      letter-spacing: 0.1em;
+    }
+
+    .project-info {}
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      transition: transform 0.3s;
+      line-height: 1.1;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.6rem;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      color: var(--gray);
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-top: 0.5rem;
+      max-width: 500px;
+    }
+
+    .project-arrow {
+      font-size: 1.5rem;
+      opacity: 0.3;
+      transition: all 0.3s;
+      color: var(--black);
+    }
+
+    /* STACK */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .stack-category {
+      padding: 2.5rem;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stack-category:nth-child(4n) {
+      border-right: none;
+    }
+
+    .stack-category:nth-last-child(-n+4) {
+      border-bottom: none;
+    }
+
+    .stack-cat-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1.2rem;
+    }
+
+    .stack-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .stack-item {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.01em;
+    }
+
+    /* CONTACT */
+    #contacto {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    #contacto .section-label {
+      color: #555;
+    }
+
+    #contacto .section-label::after {
+      background: #333;
+    }
+
+    .contact-big {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 7rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      margin-bottom: 3rem;
+      color: var(--white);
+    }
+
+    .contact-big em {
+      font-style: italic;
+      color: #555;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.3rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--white);
+    }
+
+    .footer-bottom {
+      margin-top: 5rem;
+      padding-top: 2rem;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: #555;
+      letter-spacing: 0.1em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes lineGrow {
+      from {
+        transform: scaleY(0);
+        transform-origin: top;
+      }
+
+      to {
+        transform: scaleY(1);
+      }
+    }
+
+    /* REVEAL on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav {
+        padding: 1.2rem 1.5rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 5rem 1.5rem;
+      }
+
+      .hero {
+        padding: 0 1.5rem 4rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .stack-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .project-item {
+        grid-template-columns: 50px 1fr auto;
+        gap: 1rem;
+      }
+
+      .hero-scroll {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">INICIO</a>
+    <ul class="nav-links">
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-text">DEV</div>
+    <p class="hero-label">Desarrollador de Software — México</p>
+    <h1 class="hero-name">Jose<br><em>Villarreal</em></h1>
+    <p class="hero-desc">Construyo aplicaciones móviles, backends robustos y experiencias web. Del diseño al deploy, con
+      la visión y rendimiento del producto.</p>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="sobre-mi">
+    <div class="section-label">01 — Sobre mí</div>
+    <div class="about-grid">
+      <div>
+        <h2 class="about-title reveal">De la idea,<br>a la<br><em>producción.</em></h2>
+        <div class="about-stats reveal">
+          <div class="stat-item">
+            <div class="stat-num">2+</div>
+            <div class="stat-label">Años de experiencia</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Plataformas dominadas</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <p>Soy desarrollador full-stack y creador de productos digitales.</p>
+        <p>Construyo aplicaciones móviles con Flutter, aplicaciones web con React y Next.js, y gestiono la
+          infraestructura necesaria para llevarlas a producción.</p>
+        <p>Me motiva diseñar y lanzar proyectos reales, combinando desarrollo, arquitectura y visión de producto. Creo
+          que un buen desarrollador no solo escribe código, sino que entiende el propósito detrás de lo que construye.
+        </p>
+        <p>Actualmente trabajo en proyectos propios donde experimento con nuevas ideas, validación de usuarios y
+          estrategias de crecimiento.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="proyectos">
+    <div class="section-label">02 — Proyectos</div>
+    <div class="projects-list">
+
+      <a href="snaps.html" style="text-decoration: none;  color: inherit;">
+        <div class="project-item reveal">
+          <span class="project-num">001</span>
+          <div class="project-info">
+            <div class="project-title">Snaps</div>
+            <div class="project-tags">
+              <span class="tag">Flutter</span>
+              <span class="tag">Go</span>
+              <span class="tag">Redis</span>
+              <span class="tag">Mobile</span>
+            </div>
+            <p class="project-desc">App de notas efímeras donde tú decides cuánto tiempo viven. Cuando el tiempo
+              termina, desaparecen para siempre. Incluye personalización de notas y widget en pantalla de inicio.</p>
+          </div>
+          <span class="project-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="proyectos.html" style="text-decoration: none;  color: inherit;">
+        <div class="project-item reveal">
+          <span class="project-num">002</span>
+          <div class="project-info">
+            <div class="project-title">Proyectos Web</div>
+            <div class="project-tags">
+              <span class="tag">Next.js</span>
+              <span class="tag">React</span>
+              <span class="tag">TypeScript</span>
+            </div>
+            <p class="project-desc">Aplicaciones web modernas con Next.js y React. Enfocadas en rendimiento, SEO y
+              experiencia de usuario fluida.</p>
+          </div>
+          <span class="project-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="infra.html" style="text-decoration: none;  color: inherit;">
+        <div class="project-item reveal">
+          <span class="project-num">003</span>
+          <div class="project-info">
+            <div class="project-title">Cloud & Infra</div>
+            <div class="project-tags">
+              <span class="tag">AWS</span>
+              <span class="tag">DigitalOcean</span>
+              <span class="tag">Docker</span>
+            </div>
+            <p class="project-desc">Gestión y despliegue de servicios en la nube. Arquitecturas escalables con
+              contenedores, servidores y pipelines CI/CD.</p>
+          </div>
+          <span class="project-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="section-label">03 — Stack tecnológico</div>
+    <div class="stack-grid reveal">
+
+      <div class="stack-category">
+        <div class="stack-cat-title">Mobile</div>
+        <div class="stack-items">
+          <span class="stack-item">Flutter</span>
+          <span class="stack-item">Dart</span>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-cat-title">Backend</div>
+        <div class="stack-items">
+          <span class="stack-item">Go</span>
+          <span class="stack-item">Node.js</span>
+          <span class="stack-item">Redis</span>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-cat-title">Frontend</div>
+        <div class="stack-items">
+          <span class="stack-item">Next.js</span>
+          <span class="stack-item">React</span>
+          <span class="stack-item">TypeScript</span>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-cat-title">Cloud & DevOps</div>
+        <div class="stack-items">
+          <span class="stack-item">AWS</span>
+          <span class="stack-item">DigitalOcean</span>
+          <span class="stack-item">Docker</span>
+          <span class="stack-item">Git</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contacto">
+    <div class="section-label">04 — Contacto</div>
+    <h2 class="contact-big reveal">Trabajemos<br><em>juntos.</em></h2>
+    <div class="contact-links reveal">
+      <a href="mailto:josecvfg@gmail.com" class="contact-link">Email</a>
+      <a href="https://github.com/jose-xd" target="_blank" class="contact-link">GitHub</a>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Jose Villarreal</span>
+    </div>
+  </section>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 100 * (Array.from(reveals).indexOf(entry.target) % 3));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(el => observer.observe(el));
+
+    // Subtle parallax on hero bg text
+    const bgText = document.querySelector('.hero-bg-text');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (bgText) bgText.style.transform = `translate(-50%, calc(-50% + ${y * 0.15}px))`;
+    });
+  </script>
+</body>
+
+</html>

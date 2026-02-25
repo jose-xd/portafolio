@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DGSC — Jose Villarreal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --white: #ffffff; --off: #f5f4f1; --black: #0d0d0d;
+    --gray: #6b6b6b; --light-gray: #e8e6e1; --line: #d8d5ce;
+    --dgsc-green: #3a7d44; --dgsc-sky: #b8d9e8; --dgsc-dark: #1a2e1c;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 4rem;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-logo { font-family: 'DM Mono', monospace; font-size: 0.85rem; letter-spacing: 0.08em; color: var(--black); text-decoration: none; }
+  .nav-back { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+  .nav-back:hover { color: var(--black); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--dgsc-dark);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    padding: 8rem 4rem 5rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Pixel-art grass decoration */
+  .hero-grass {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(180deg, transparent 0%, #2d5a1e 60%, #1f3f14 100%);
+    opacity: 0.6;
+  }
+  .hero-sky-orb {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,217,232,0.08) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero-left { position: relative; z-index: 2; }
+  .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--dgsc-sky); margin-bottom: 1.5rem; opacity: 0; animation: slideUp 0.8s ease 0.3s forwards; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(4rem, 10vw, 10rem); font-weight: 900; line-height: 0.85; letter-spacing: -0.04em; color: var(--white); margin-bottom: 2rem; opacity: 0; animation: slideUp 0.9s ease 0.5s forwards; }
+  .hero-title em { font-style: italic; color: var(--dgsc-sky); }
+  .hero-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: rgba(255,255,255,0.4); line-height: 1.5; max-width: 340px; opacity: 0; animation: slideUp 0.8s ease 0.7s forwards; }
+  .hero-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 2rem; opacity: 0; animation: slideUp 0.8s ease 0.9s forwards; }
+  .htag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.9rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; color: rgba(255,255,255,0.45); }
+
+  .hero-right { position: relative; z-index: 2; opacity: 0; animation: slideUp 0.9s ease 0.6s forwards; }
+  .hero-img-wrap { border-radius: 1rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 100px rgba(0,0,0,0.5); }
+  .hero-img { width: 100%; display: block; }
+
+  /* SECTIONS */
+  section { padding: 7rem 4rem; }
+  .divider { width: 100%; height: 1px; background: var(--line); }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  /* OVERVIEW */
+  .overview-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 6rem; align-items: start; }
+  .overview-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1.5rem; }
+  .overview-title em { font-style: italic; color: var(--gray); }
+  .overview-text { font-size: 1rem; line-height: 1.85; color: var(--gray); font-weight: 300; }
+  .overview-text p + p { margin-top: 1.2rem; }
+
+  .meta-list { display: flex; flex-direction: column; gap: 1.8rem; }
+  .meta-item {}
+  .meta-key { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.4rem; }
+  .meta-val { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; }
+
+  /* SCREENSHOTS */
+  .screenshots-section { background: var(--off); }
+  .screenshots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .screenshot-wrap { border-radius: 1rem; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 16px 48px rgba(0,0,0,0.08); transition: transform 0.4s, box-shadow 0.4s; }
+  .screenshot-wrap:hover { transform: translateY(-6px); box-shadow: 0 28px 64px rgba(0,0,0,0.13); }
+  .screenshot-wrap.full { grid-column: span 2; }
+  .screenshot-img { width: 100%; display: block; }
+  .screenshot-cap { padding: 1rem 1.2rem; background: var(--white); font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); border-top: 1px solid var(--line); }
+
+  /* FEATURES */
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+  .feature-item { border-top: 2px solid var(--line); padding-top: 1.5rem; transition: border-color 0.3s; }
+  .feature-item:hover { border-top-color: var(--dgsc-green); }
+  .feature-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--gray); letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+  .feature-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .feature-desc { font-size: 0.88rem; color: var(--gray); line-height: 1.65; font-weight: 300; }
+
+  /* LINKS */
+  .links-section { background: var(--dgsc-dark); }
+  .links-section .section-label { color: rgba(255,255,255,0.2); }
+  .links-section .section-label::after { background: rgba(255,255,255,0.1); }
+  .links-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 900; letter-spacing: -0.03em; color: white; margin-bottom: 3rem; line-height: 1; }
+  .links-title em { font-style: italic; color: var(--dgsc-sky); }
+  .links-row { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .project-link { display: flex; align-items: center; gap: 0.7rem; padding: 0.9rem 1.6rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; text-decoration: none; color: white; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.2s; }
+  .project-link:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
+  .project-link.primary { background: var(--dgsc-green); border-color: var(--dgsc-green); }
+  .project-link.primary:hover { background: #4a9456; border-color: #4a9456; }
+
+  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+  @keyframes slideUp { from{opacity:0;transform:translateY(28px);} to{opacity:1;transform:translateY(0);} }
+  .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media(max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    section { padding: 5rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 4rem; }
+    .overview-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .screenshots-grid { grid-template-columns: 1fr; }
+    .screenshot-wrap.full { grid-column: span 1; }
+    .features-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="portfolio.html" class="nav-logo">INICIO</a>
+  <a href="proyectos.html" class="nav-back">← Proyectos</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-sky-orb"></div>
+  <div class="hero-grass"></div>
+
+  <div class="hero-left">
+    <p class="hero-eyebrow">Proyecto Web — Disc Golf</p>
+    <h1 class="hero-title">DG<em>SC</em></h1>
+    <p class="hero-sub">Disc Golf Score Card. Registra tus rondas, consulta el historial y marca el campo en el mapa.</p>
+    <div class="hero-tags">
+      <span class="htag">Next.js</span>
+      <span class="htag">Fullstack</span>
+      <span class="htag">Maps</span>
+      <span class="htag">Auth</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-wrap">
+      <img class="hero-img" src="d1.webp" alt="DGSC scorecard" />
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-label">01 — El proyecto</div>
+  <div class="overview-grid">
+    <div>
+      <h2 class="overview-title reveal">Golf de disco,<br>puntaje <em>digital.</em></h2>
+      <div class="overview-text reveal">
+        <p>DGSC nació de una necesidad real: llevar el marcador en una ronda de disc golf siempre terminaba en notas de papel arrugadas o cálculos mentales con poco margen de error.</p>
+        <p>La app permite crear una tarjeta de puntaje para cualquier campo, registrar los tiros por hoyo para cada jugador, y guardar la partida con la ubicación del campo. Todo en una interfaz rápida, sin distracciones, diseñada para usarse al aire libre con el sol de frente.</p>
+        <p>El historial guarda todas las rondas pasadas para que puedas ver tu progreso a lo largo del tiempo.</p>
+      </div>
+    </div>
+    <div class="meta-list reveal">
+      <div class="meta-item">
+        <div class="meta-key">Tipo</div>
+        <div class="meta-val">Aplicación web fullstack</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-key">Stack</div>
+        <div class="meta-val">Next.js · Maps API</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-key">Funciones clave</div>
+        <div class="meta-val">Login · Historial · Ubicación</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-key">Rol</div>
+        <div class="meta-val">Diseño, desarrollo & deploy</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SCREENSHOTS -->
+<section class="screenshots-section" id="screenshots">
+  <div class="section-label">02 — La app</div>
+  <div class="screenshots-grid">
+    <div class="screenshot-wrap reveal">
+      <img class="screenshot-img" src="d1.webp" alt="Tarjeta de puntaje activa" />
+      <div class="screenshot-cap">Tarjeta de puntaje en partida</div>
+    </div>
+    <div class="screenshot-wrap reveal">
+      <img class="screenshot-img" src="d2.webp" alt="Selección de campo en mapa" />
+      <div class="screenshot-cap">Selección del campo en mapa</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">03 — Características</div>
+  <div class="features-grid">
+    <div class="feature-item reveal">
+      <div class="feature-num">001</div>
+      <div class="feature-title">Tarjeta de puntaje</div>
+      <p class="feature-desc">Scorecard digital con soporte para múltiples jugadores, pares por hoyo y cálculo automático del total. Igual que el papel, pero sin perderlo.</p>
+    </div>
+    <div class="feature-item reveal">
+      <div class="feature-num">002</div>
+      <div class="feature-title">Login & cuentas</div>
+      <p class="feature-desc">Autenticación para que cada jugador tenga su propio historial. Tus rondas siempre disponibles desde cualquier dispositivo.</p>
+    </div>
+    <div class="feature-item reveal">
+      <div class="feature-num">003</div>
+      <div class="feature-title">Ubicación del campo</div>
+      <p class="feature-desc">Selecciona el campo desde un mapa integrado al crear la tarjeta. Cada partida queda vinculada geográficamente al lugar donde se jugó.</p>
+    </div>
+    <div class="feature-item reveal">
+      <div class="feature-num">004</div>
+      <div class="feature-title">Historial de partidas</div>
+      <p class="feature-desc">Todas las rondas pasadas guardadas y accesibles. Consulta fechas, campos, compañeros y resultados en cualquier momento.</p>
+    </div>
+    <div class="feature-item reveal">
+      <div class="feature-num">005</div>
+      <div class="feature-title">Interfaz rápida</div>
+      <p class="feature-desc">Diseñada para usarse en el campo. Controles grandes, flujo claro y sin pasos innecesarios para registrar un tiro en segundos.</p>
+    </div>
+    <div class="feature-item reveal">
+      <div class="feature-num">006</div>
+      <div class="feature-title">Next.js fullstack</div>
+      <p class="feature-desc">Frontend y backend en un solo proyecto. API Routes de Next.js manejan la lógica del servidor, con rendering optimizado en cada página.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LINKS -->
+<section class="links-section">
+  <div class="section-label">04 — Proyecto</div>
+  <h2 class="links-title reveal">Juega,<br><em>puntúa.</em></h2>
+</section>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), (i % 4) * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
